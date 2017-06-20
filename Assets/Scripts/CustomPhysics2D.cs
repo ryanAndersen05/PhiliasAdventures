@@ -41,7 +41,7 @@ public class CustomPhysics2D : MonoBehaviour {
 
     private void updatePositionFromVelocity()
     {
-        print(velocity);
+        //print(velocity);
         Vector2 originalPosition = new Vector2(transform.position.x, transform.position.y);
         originalPosition += velocity * Time.deltaTime;
         transform.position = new Vector3(originalPosition.x, originalPosition.y, transform.position.z);
