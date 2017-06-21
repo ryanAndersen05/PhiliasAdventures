@@ -30,5 +30,17 @@ public class DebugSettings : MonoBehaviour {
     }
     #endregion monobehaviouir methods
 
+    #region static methods
+    public static void DrawDebugRay(Vector2 origin, Vector2 destination, Color color)
+    {
+        Debug.DrawLine(origin, destination, color);
+    }
+
+    public static void DrawDebugRay(Vector2 origin, Vector2 destination)
+    {
+        DrawDebugRay(origin, destination, Color.red);
+    }
+    #endregion static methods
+
 
 }

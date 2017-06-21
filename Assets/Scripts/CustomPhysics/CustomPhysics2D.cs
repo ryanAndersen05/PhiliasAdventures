@@ -67,7 +67,7 @@ public class CustomPhysics2D : MonoBehaviour {
         scale = Mathf.Sign(compareVec.y);
         if (scale * compareVec.y > scale * velocity.y)
         {
-            print(gravityDirection.y * terminalVelocity);
+            //print(gravityDirection.y * terminalVelocity);
             velocity.y = Mathf.MoveTowards(velocity.y, gravityDirection.y * terminalVelocity, Mathf.Abs(Time.deltaTime * gravityScale * gravityDirection.y * GRAVITY));
         }
     }

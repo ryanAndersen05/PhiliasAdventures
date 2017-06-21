@@ -22,17 +22,21 @@ public class CustomCollider2D : MonoBehaviour {
 
     private Corners allCorners;
     private CustomPhysics2D rigid;
+    private BoxCollider2D collider;
     #endregion main variables
 
     #region monobehaviour methods
     private void Start()
     {
+        collider = GetComponent<BoxCollider2D>();
         rigid = GetComponent<CustomPhysics2D>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
+        updateCorners();
         checkVerticalRays();
+        checkHorizontalRays();
     }
 
     private void OnValidate()
@@ -71,10 +75,11 @@ public class CustomCollider2D : MonoBehaviour {
             }
 
 
-            //if (Settings.Instance.debugDraw)
-            //{
-            //    DebugDrawRaycast(ray.origin, ray.origin + ray.direction * Mathf.Abs(yVel) * Time.deltaTime);
-            //}
+            if (DebugSettings.Instance.displayColliderRays)
+            {
+                DebugSettings.DrawDebugRay(ray.origin, ray.origin + (ray.direction * Mathf.Abs(yVel) * Time.deltaTime));
+                //DebugSettings.DrawDebugRay(ray.origin, ray.origin + Vector2.down * .2f);
+            }
         }
     }
 
@@ -102,11 +107,21 @@ public class CustomCollider2D : MonoBehaviour {
             {
 
             }
-            //if (Settings.Instance.debugDraw)
-            //{
-            //    DebugDrawRaycast(ray.origin, ray.origin + ray.direction * Mathf.Abs(xVel) * Time.deltaTime);
-            //}
+            if (DebugSettings.Instance.displayColliderRays)
+            {
+                DebugSettings.DrawDebugRay(ray.origin, ray.origin + ray.direction * Mathf.Abs(xVel) * Time.deltaTime);
+            }
         }
+    }
+
+    private void updateCorners()
+    {
+        Corners newCorners = new Corners();
+        newCorners.bottomLeft = collider.bounds.min;
+        newCorners.bottomRight = new Vector2(collider.bounds.max.x, collider.bounds.min.y);
+        newCorners.topLeft = new Vector2(collider.bounds.min.x, collider.bounds.max.y);
+        newCorners.topRight = collider.bounds.max;
+        allCorners = newCorners;
     }
 
     #region structs
