@@ -5,8 +5,10 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour {
     #region main variables
     public Vector2 cameraOffset = Vector2.zero;
-    public float speed = 10;
+    public float timeToReachTarget = .5f;
+
     private Transform targetTransform;
+    private Vector3 currentCameraVelocity;
     #endregion main variables
 
     #region monobehaviour methods
@@ -23,7 +25,8 @@ public class CameraFollow : MonoBehaviour {
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, targetTransform.position + new Vector3(cameraOffset.x, cameraOffset.y, transform.position.z), Time.deltaTime * speed);
+        //print(Time.deltaTime);
+        transform.position = Vector3.SmoothDamp(transform.position, targetTransform.position + new Vector3(cameraOffset.x, cameraOffset.y, transform.position.z), ref currentCameraVelocity, timeToReachTarget);
     }
     #endregion monobehaviour methods
 }

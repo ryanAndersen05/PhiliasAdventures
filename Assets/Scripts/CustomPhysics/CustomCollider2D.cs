@@ -22,13 +22,13 @@ public class CustomCollider2D : MonoBehaviour {
 
     private Corners allCorners;
     private CustomPhysics2D rigid;
-    private BoxCollider2D collider;
+    private BoxCollider2D physicsCollider;
     #endregion main variables
 
     #region monobehaviour methods
     private void Start()
     {
-        collider = GetComponent<BoxCollider2D>();
+        physicsCollider = GetComponent<BoxCollider2D>();
         rigid = GetComponent<CustomPhysics2D>();
     }
 
@@ -70,8 +70,9 @@ public class CustomCollider2D : MonoBehaviour {
             hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Abs(yVel) * Time.deltaTime, LayerMask.GetMask(layerMask));
             if (hit)
             {
+                print("I hit a thing");
                 transform.position = new Vector3(transform.position.x, rigid.velocity.y <= 0 ? hit.collider.bounds.max.y : hit.collider.bounds.min.y, transform.position.z);
-                rigid.velocity.y = 0;
+                //rigid.velocity.y = 0;
             }
 
 
@@ -117,10 +118,10 @@ public class CustomCollider2D : MonoBehaviour {
     private void updateCorners()
     {
         Corners newCorners = new Corners();
-        newCorners.bottomLeft = collider.bounds.min;
-        newCorners.bottomRight = new Vector2(collider.bounds.max.x, collider.bounds.min.y);
-        newCorners.topLeft = new Vector2(collider.bounds.min.x, collider.bounds.max.y);
-        newCorners.topRight = collider.bounds.max;
+        newCorners.bottomLeft = physicsCollider.bounds.min;
+        newCorners.bottomRight = new Vector2(physicsCollider.bounds.max.x, physicsCollider.bounds.min.y);
+        newCorners.topLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.max.y);
+        newCorners.topRight = physicsCollider.bounds.max;
         allCorners = newCorners;
     }
 
