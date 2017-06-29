@@ -30,6 +30,7 @@ public class CharacterMovement : MonoBehaviour {
 
     private void Update()
     {
+        hInput = PlayerController.Instance.getAxisRaw(PlayerController.MOVEMENT);
         updateMovementSpeed();
     }
     #endregion monobehaviour methods
@@ -52,6 +53,7 @@ public class CharacterMovement : MonoBehaviour {
             goalSpeed = Mathf.Sign(hInput) * walkSpeed;
         }
         rigid.velocity.x = Mathf.MoveTowards(rigid.velocity.x, goalSpeed, Time.deltaTime * acceleration);
+        print(rigid.velocity.x);
     }
 
     private void updateMovementSpeedInAir()
