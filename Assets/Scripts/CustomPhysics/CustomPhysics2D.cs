@@ -10,7 +10,11 @@ public class CustomPhysics2D : MonoBehaviour {
     #region main variables
     public const float GRAVITY = 9.8f;
     
+    [Tooltip("The scale of the gravity force that will be applied to the character")]
     public float gravityScale = 1.0f;
+    [Tooltip("A multipler that will be applied to the gravity when the character is falling")]
+    public float fallingMultiplier = 1.4f;
+
     [Tooltip("The maximum velocity that will be applied by the gravity force. If the speed is greater, gravity will not be applied")]
     public float terminalVelocity = 10.0f;
     [Tooltip("This is the direction of the gravity force that will be applied to this object. Will always update to a unit vector")]
@@ -59,16 +63,17 @@ public class CustomPhysics2D : MonoBehaviour {
     {
         Vector2 compareVec = gravityDirection * terminalVelocity;
         float scale = Mathf.Sign(compareVec.x);
+        float actualGrav = gravityScale * (velocity.y < 0 ? fallingMultiplier : 1);
 
         if (scale * compareVec.x > scale * velocity.x)
         {
-            velocity.x = Mathf.MoveTowards(velocity.x, gravityDirection.x * terminalVelocity, Mathf.Abs(Time.deltaTime * gravityScale * gravityDirection.x * GRAVITY));
+            velocity.x = Mathf.MoveTowards(velocity.x, gravityDirection.x * terminalVelocity, Mathf.Abs(Time.deltaTime * actualGrav * gravityDirection.x * GRAVITY));
         }
         scale = Mathf.Sign(compareVec.y);
         if (scale * compareVec.y > scale * velocity.y)
         {
             //print(gravityDirection.y * terminalVelocity);
-            velocity.y = Mathf.MoveTowards(velocity.y, gravityDirection.y * terminalVelocity, Mathf.Abs(Time.deltaTime * gravityScale * gravityDirection.y * GRAVITY));
+            velocity.y = Mathf.MoveTowards(velocity.y, gravityDirection.y * terminalVelocity, Mathf.Abs(Time.deltaTime * actualGrav * gravityDirection.y * GRAVITY));
         }
     }
 }

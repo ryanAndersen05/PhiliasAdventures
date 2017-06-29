@@ -29,11 +29,13 @@ public class PlayerController : MonoBehaviour {
     private void Awake()
     {
         instance = this;
+        controllerDictionary.Add(MOVEMENT, new ControlInfo { isAxis = true });
+        controllerDictionary.Add(JUMP, new ControlInfo());
     }
 
     private void Start()
     {
-        controllerDictionary.Add(MOVEMENT, new ControlInfo { isAxis = true });
+        
     }
 
     private void Update()
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool isDown(string buttonName)
     {
-        if (controllerDictionary.ContainsKey(buttonName))
+        if (!controllerDictionary.ContainsKey(buttonName))
         {
             Debug.LogWarning("There is no button input set as " + buttonName);
             return false;
@@ -79,7 +81,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool isHeld(string buttonName)
     {
-        if (controllerDictionary.ContainsKey(buttonName))
+        if (!controllerDictionary.ContainsKey(buttonName))
         {
             Debug.LogWarning("There is no button input set as " + buttonName);
             return false;
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool isReleased(string buttonName)
     {
-        if (controllerDictionary.ContainsKey(buttonName))
+        if (!controllerDictionary.ContainsKey(buttonName))
         {
             Debug.LogWarning("There is no button input set as " + buttonName);
             return false;
