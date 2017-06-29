@@ -60,7 +60,9 @@ public class PlayerController : MonoBehaviour {
                 controlInfo.isHeld = Input.GetButton(key);
                 controlInfo.isReleased = Input.GetButtonUp(key);
             }
+            updateDictionary.Add(key, controlInfo);
         }
+        controllerDictionary = updateDictionary;
     }
 
     public bool isDown(string buttonName)
