@@ -32,7 +32,7 @@ public class CustomCollider2D : MonoBehaviour {
         rigid = GetComponent<CustomPhysics2D>();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         updateCorners();
         checkVerticalRays();
@@ -70,9 +70,9 @@ public class CustomCollider2D : MonoBehaviour {
             hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Abs(yVel) * Time.deltaTime, LayerMask.GetMask(layerMask));
             if (hit)
             {
-                print("I hit a thing");
+                //print("I hit a thing");
                 transform.position = new Vector3(transform.position.x, rigid.velocity.y <= 0 ? hit.collider.bounds.max.y : hit.collider.bounds.min.y, transform.position.z);
-                //rigid.velocity.y = 0;
+                rigid.velocity.y = 0;
             }
 
 

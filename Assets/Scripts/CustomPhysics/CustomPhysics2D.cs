@@ -26,7 +26,7 @@ public class CustomPhysics2D : MonoBehaviour {
         gravityDirection = gravityDirection.normalized;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         updateVelocityGravity();
         updatePositionFromVelocity();
