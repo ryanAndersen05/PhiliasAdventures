@@ -13,7 +13,7 @@ public class Jump : MonoBehaviour {
     
     private bool usedDoubleJump;
     private CustomPhysics2D rigid;
-    private float jumpVelocity;
+    public float jumpVelocity { get; private set; }
 
     private void Start()
     {
@@ -49,6 +49,7 @@ public class Jump : MonoBehaviour {
         }
         jumpVelocity = 2 * jumpHeight / timeToHeight;
         rigid.gravityScale = jumpVelocity / timeToHeight / CustomPhysics2D.GRAVITY;
+        rigid.terminalVelocity = jumpVelocity * rigid.fallingMultiplier;
     }
 
     public void jump()

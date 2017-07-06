@@ -72,7 +72,7 @@ public class CustomCollider2D : MonoBehaviour {
             ray.origin = left + ((right - left) / (verticalRayTraceCount - 1)) * i;
             ray.direction = rigid.velocity.y <= 0 ? Vector2.down : Vector2.up;
             RaycastHit2D hit;
-            float distanctToCalculate = Mathf.Abs(rigid.velocity.y) * Time.deltaTime + (rigid.velocity.y == 0f ? .15f : 0);
+            float distanctToCalculate = Mathf.Abs(rigid.velocity.y) * Time.deltaTime + (rigid.velocity.y == 0f ? Mathf.Abs(verticalOffset) * 2 + .01f : 0);
             hit = Physics2D.Raycast(ray.origin, ray.direction, distanctToCalculate, LayerMask.GetMask(layerMask));
             if (hit)
             {
