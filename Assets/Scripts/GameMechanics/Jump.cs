@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CustomPhysics2D))]
 public class Jump : MonoBehaviour {
     [Tooltip("Mark this true if you would like the player to have a double jump ability")]
     public bool hasDoubleJump = true;
@@ -23,10 +24,21 @@ public class Jump : MonoBehaviour {
 
     private void Update()
     {
+        //print(rigid.inAir);
         if (PlayerController.Instance.isDown(PlayerController.JUMP))
         {
-            jump();
+            if (!rigid.inAir)
+            {
+                hasDoubleJump = true;
+                jump();
+            }
+            else if (hasDoubleJump)
+            {
+                hasDoubleJump = false;
+                jump();
+            }
         }
+        
     }
 
     private void OnValidate()

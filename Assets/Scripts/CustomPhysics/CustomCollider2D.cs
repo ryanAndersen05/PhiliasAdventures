@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// This script will rake the place of Unity Physics. Use this script on non static objects
+/// This script will rake the place of Unity Physics. Use this script on non static objects.
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(CustomPhysics2D))]
@@ -16,9 +16,13 @@ public class CustomCollider2D : MonoBehaviour {
     [Tooltip("The number of ray traces that will be shot between the TOP and BOTTOM corners of our box collider")]
     public int horizontalRayTraceCount = 2;
 
+    [Tooltip("This value is used to calculate how much the vertical rays will be pushed into the collider. If you would like them to be pushed out instead, set the value as negative.")]
     public float verticalOffset = .005f;
+    [Tooltip("This value is used to calculate how much the horizontal rays will be pushed into the collider. If you would like them to be pushed out instead, set the value as negative.")]
     public float horizontalOffset = .005f;
+    [Tooltip("The layers that are able to intereact with the players collider.")]
     public string[] layerMask;
+
 
     private Corners allCorners;
     private CustomPhysics2D rigid;
@@ -46,6 +50,7 @@ public class CustomCollider2D : MonoBehaviour {
     }
     #endregion monobehaviour methods
 
+    #region collision methods
     /// <summary>
     /// Will fire off rays in the direction that it is traveling
     /// </summary>
@@ -61,27 +66,29 @@ public class CustomCollider2D : MonoBehaviour {
         left.x += verticalOffset;
         right.x -= verticalOffset;
         Ray2D ray = new Ray2D();
-        float yVel = rigid.velocity.y;
+        rigid.inAir = true;
         for (int i = 0; i < verticalRayTraceCount; i++)
         {
             ray.origin = left + ((right - left) / (verticalRayTraceCount - 1)) * i;
-            ray.direction = (Vector2.up * yVel).normalized;
+            ray.direction = rigid.velocity.y <= 0 ? Vector2.down : Vector2.up;
             RaycastHit2D hit;
-            hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Abs(yVel) * Time.deltaTime, LayerMask.GetMask(layerMask));
+            float distanctToCalculate = Mathf.Abs(rigid.velocity.y) * Time.deltaTime + (rigid.velocity.y == 0f ? .15f : 0);
+            hit = Physics2D.Raycast(ray.origin, ray.direction, distanctToCalculate, LayerMask.GetMask(layerMask));
             if (hit)
             {
                 //print("I hit a thing");
                 transform.position = new Vector3(transform.position.x, rigid.velocity.y <= 0 ? hit.collider.bounds.max.y : hit.collider.bounds.min.y, transform.position.z);
-                rigid.velocity.y = 0;
+                rigid.inAir = false;
+                rigid.velocity.y = 0f;
             }
-
 
             if (DebugSettings.Instance.displayColliderRays)
             {
-                DebugSettings.DrawDebugRay(ray.origin, ray.origin + (ray.direction * Mathf.Abs(yVel) * Time.deltaTime));
+                DebugSettings.DrawDebugRay(ray.origin, ray.origin + (ray.direction * distanctToCalculate));
                 //DebugSettings.DrawDebugRay(ray.origin, ray.origin + Vector2.down * .2f);
             }
         }
+        //print(rigid.inAir);
     }
 
     private void checkHorizontalRays()
@@ -114,6 +121,7 @@ public class CustomCollider2D : MonoBehaviour {
             }
         }
     }
+    #endregion collision methods
 
     private void updateCorners()
     {

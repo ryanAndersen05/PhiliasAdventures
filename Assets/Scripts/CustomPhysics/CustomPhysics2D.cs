@@ -22,6 +22,8 @@ public class CustomPhysics2D : MonoBehaviour {
     private Vector2 gravityDirection = Vector2.down;
     [HideInInspector]
     public Vector2 velocity;
+    [HideInInspector]
+    public bool inAir;
     #endregion main variables
 
     #region monobehaviour methods
@@ -30,9 +32,16 @@ public class CustomPhysics2D : MonoBehaviour {
         gravityDirection = gravityDirection.normalized;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         updateVelocityGravity();
+    }
+
+    /// <summary>
+    /// We want to move the player after everything has been calculates, so it will be placed in the LateUpdate for now
+    /// </summary>
+    private void LateUpdate()
+    {
         updatePositionFromVelocity();
     }
 
@@ -61,6 +70,7 @@ public class CustomPhysics2D : MonoBehaviour {
     /// </summary>
     private void updateVelocityGravity()
     {
+        if (!inAir) return;
         Vector2 compareVec = gravityDirection * terminalVelocity;
         float scale = Mathf.Sign(compareVec.x);
         float actualGrav = gravityScale * (velocity.y < 0 ? fallingMultiplier : 1);
