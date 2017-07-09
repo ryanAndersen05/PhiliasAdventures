@@ -36,7 +36,11 @@ public class GroundColliders : MonoBehaviour {
         switch (groundType)
         {
             case GroundType.WALL:
-                if (!(collider is BoxCollider2D))
+                if (!collider)
+                {
+                    this.gameObject.AddComponent<BoxCollider2D>();
+                }
+                else if (!(collider is BoxCollider2D))
                 {
                     StartCoroutine(DestroyOnValidate(collider));
                     this.gameObject.AddComponent<BoxCollider2D>();
@@ -45,7 +49,11 @@ public class GroundColliders : MonoBehaviour {
             case GroundType.ANGLED_GROUND:
             case GroundType.FLAT_GROUND:
             case GroundType.ONE_WAY_PLATFORM:
-                if (!(collider is EdgeCollider2D))
+                if (!collider)
+                {
+                    this.gameObject.AddComponent<EdgeCollider2D>();
+                }
+                else if (!(collider is EdgeCollider2D))
                 {
                     StartCoroutine(DestroyOnValidate(collider));
                     this.gameObject.AddComponent<EdgeCollider2D>();
