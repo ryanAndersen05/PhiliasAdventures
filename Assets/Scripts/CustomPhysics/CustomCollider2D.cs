@@ -30,20 +30,20 @@ public class CustomCollider2D : MonoBehaviour {
     #endregion main variables
 
     #region monobehaviour methods
-    private void Start()
+    protected void Start()
     {
         physicsCollider = GetComponent<BoxCollider2D>();
         rigid = GetComponent<CustomPhysics2D>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         updateCorners();
         checkVerticalRays();
         checkHorizontalRays();
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         if (horizontalRayTraceCount < 2) horizontalRayTraceCount = 2;
         if (verticalRayTraceCount < 2) verticalRayTraceCount = 2;
@@ -54,7 +54,7 @@ public class CustomCollider2D : MonoBehaviour {
     /// <summary>
     /// Will fire off rays in the direction that it is traveling
     /// </summary>
-    private void checkVerticalRays()
+    protected virtual void checkVerticalRays()
     {
         Vector2 left = allCorners.bottomLeft;
         Vector2 right = allCorners.bottomRight;
@@ -91,7 +91,7 @@ public class CustomCollider2D : MonoBehaviour {
         //print(rigid.inAir);
     }
 
-    private void checkHorizontalRays()
+    protected virtual void checkHorizontalRays()
     {
         Vector2 top = allCorners.topRight;
         Vector2 bottom = allCorners.bottomRight;
@@ -123,7 +123,7 @@ public class CustomCollider2D : MonoBehaviour {
     }
     #endregion collision methods
 
-    private void updateCorners()
+    protected void updateCorners()
     {
         Corners newCorners = new Corners();
         newCorners.bottomLeft = physicsCollider.bounds.min;
@@ -137,7 +137,7 @@ public class CustomCollider2D : MonoBehaviour {
     /// <summary>
     /// This struct is used to store the four corners of our collision box
     /// </summary>
-    private struct Corners
+    protected struct Corners
     {
         public Vector2 topLeft;
         public Vector2 topRight;
