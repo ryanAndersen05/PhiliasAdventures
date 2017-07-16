@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
     #region main variables
-    public Vector2 cameraOffset = Vector2.zero;
     public float timeToReachTarget = .5f;
 
+    private Vector2 cameraOffset = Vector2.zero;
     private Transform targetTransform;
     private Vector3 currentCameraVelocity;
     #endregion main variables
@@ -21,6 +21,8 @@ public class CameraFollow : MonoBehaviour {
             this.enabled = false;
         }
         this.transform.parent = null;
+        cameraOffset = transform.position - targetTransform.position;
+        
     }
 
     private void LateUpdate()
