@@ -77,9 +77,23 @@ public class CustomCollider2D : MonoBehaviour {
             if (hit)
             {
                 //print("I hit a thing");
-                transform.position = new Vector3(transform.position.x, rigid.velocity.y <= 0 ? hit.collider.bounds.max.y : hit.collider.bounds.min.y, transform.position.z);
-                rigid.inAir = false;
-                rigid.velocity.y = 0f;
+                GroundColliders groundCollider = hit.collider.GetComponent<GroundColliders>();
+                if (groundCollider)
+                {
+                    Vector2 collisionPoint;
+                    if (rigid.velocity.y <= 0)
+                    {
+                        collisionPoint = groundCollider.GetTopPosition(transform.position.x);
+                        transform.position = collisionPoint;
+                    }
+                    else
+                    {
+                        collisionPoint = groundCollider.GetBottomPosition(transform.position.x);
+                    }
+
+                    rigid.inAir = false;
+                    rigid.velocity.y = 0;
+                }
             }
 
             if (DebugSettings.Instance.displayColliderRays)
@@ -126,8 +140,8 @@ public class CustomCollider2D : MonoBehaviour {
     protected void updateCorners()
     {
         Corners newCorners = new Corners();
-        newCorners.bottomLeft = physicsCollider.bounds.min;
-        newCorners.bottomRight = new Vector2(physicsCollider.bounds.max.x, physicsCollider.bounds.min.y);
+        newCorners.bottomLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.min.y - .015f);
+        newCorners.bottomRight = new Vector2(physicsCollider.bounds.max.x, physicsCollider.bounds.min.y + .015f);
         newCorners.topLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.max.y);
         newCorners.topRight = physicsCollider.bounds.max;
         allCorners = newCorners;

@@ -93,8 +93,15 @@ public class GroundColliders : MonoBehaviour {
             case GroundType.FLAT_GROUND:
             case GroundType.ONE_WAY_PLATFORM:
             case GroundType.ANGLED_GROUND:
-
-                break;
+                EdgeCollider2D edgeCollider = (EdgeCollider2D)mainCollider;
+                //print("Point 1: " + edgeCollider.points[0] + " Point 2: " + edgeCollider.points[1]);
+                return FindPointBetweenX(edgeCollider.points[0], edgeCollider.points[1], xPosition);
+            case GroundType.WALL:
+                BoxCollider2D boxCollider = (BoxCollider2D)mainCollider;
+                Vector2 topLeft = new Vector2(boxCollider.bounds.min.x, boxCollider.bounds.max.y);
+                Vector2 topRight = boxCollider.bounds.max;
+                return FindPointBetweenX(topLeft, topRight, xPosition);
+                
 
                 
         }
@@ -109,9 +116,19 @@ public class GroundColliders : MonoBehaviour {
     /// <returns></returns>
     public Vector2 GetBottomPosition(float xPosition)
     {
+        
         switch (groundType)
         {
-            
+            case GroundType.FLAT_GROUND:
+            case GroundType.ANGLED_GROUND:
+            case GroundType.ONE_WAY_PLATFORM:
+                EdgeCollider2D edgeCollider = (EdgeCollider2D)mainCollider;
+                return FindPointBetweenX(edgeCollider.points[0], edgeCollider.points[1], xPosition);
+            case GroundType.WALL:
+                BoxCollider2D boxCollider = (BoxCollider2D)mainCollider;
+                Vector2 bottomLeft = boxCollider.bounds.min;
+                Vector2 bottomRight = new Vector2(boxCollider.bounds.max.x, boxCollider.bounds.min.y);
+                return FindPointBetweenX(bottomLeft, bottomRight, xPosition);
         }
         return Vector2.zero;
     }
@@ -155,18 +172,18 @@ public class GroundColliders : MonoBehaviour {
     /// <returns></returns>
     private Vector2 FindPointBetweenX(Vector2 v1, Vector2 v2, float x)
     {
-        Vector2 point;
+        Vector2 point = new Vector2(x, 0);
         Vector2 dir = (v2 - v1).normalized;
-        point = v1 + dir * (x - v1.x);
+        point.y = (v1 + dir * (x - v1.x)).y;
         return point;
     }
 
 
     private Vector2 FindPointBetweenY(Vector2 v1, Vector2 v2, float y)
     {
-        Vector2 point;
+        Vector2 point = new Vector2(0, y);
         Vector2 dir = (v2 - v1).normalized;
-        point = v1 + dir * (y - v1.y);
+        point.x = (v1 + dir * (y - v1.y)).x;
         return point;
     }
     #endregion calculate position
