@@ -85,8 +85,8 @@ public class GroundColliders : MonoBehaviour {
         switch (groundType)
         {
             case GroundType.ANGLED_GROUND:
-                
-                return vec;
+
+                break;
                 
         }
         return Vector2.zero;
