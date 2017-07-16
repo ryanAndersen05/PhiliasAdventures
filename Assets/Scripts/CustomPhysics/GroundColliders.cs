@@ -80,19 +80,34 @@ public class GroundColliders : MonoBehaviour {
     }
 
     #region calculate position
-    public Vector2 GetTopPosition(float x)
+    /// <summary>
+    /// Top position is referring to the Top most portion of the ground tile given an x-Position
+    /// This point is extrapolated and is based entirely on the angle of the tile. Make sure you are actually colliding with this tile before using this method
+    /// </summary>
+    /// <param name="xPosition"></param>
+    /// <returns></returns>
+    public Vector2 GetTopPosition(float xPosition)
     {
         switch (groundType)
         {
+            case GroundType.FLAT_GROUND:
+            case GroundType.ONE_WAY_PLATFORM:
             case GroundType.ANGLED_GROUND:
 
                 break;
+
                 
         }
         return Vector2.zero;
     }
 
-    public Vector2 GetBottomPosition(float x)
+    /// <summary>
+    /// Bottom position is reffering the to the bottom most position of the ground tile given an x-Position
+    /// This point is extrapolated and is based entirely on the angle of the tile. Make sure you are actually colliding with this tile before using this method
+    /// </summary>
+    /// <param name="xPosition"></param>
+    /// <returns></returns>
+    public Vector2 GetBottomPosition(float xPosition)
     {
         switch (groundType)
         {
@@ -101,7 +116,13 @@ public class GroundColliders : MonoBehaviour {
         return Vector2.zero;
     }
 
-    public Vector2 GetRightPosition(float y)
+    /// <summary>
+    /// Right position is referring to the right most position of the ground tile given a y-Position
+    /// This point is extrapolated and is based entirely on the angle of the tile. Make sure you are actually colliding with this tile before using this method
+    /// </summary>
+    /// <param name="yPosition"></param>
+    /// <returns></returns>
+    public Vector2 GetRightPosition(float yPosition)
     {
         switch(groundType)
         {
@@ -110,13 +131,43 @@ public class GroundColliders : MonoBehaviour {
         return Vector2.zero;
     }
 
-    public Vector2 GetLeftPosition(float y)
+    /// <summary>
+    /// Left position is referring to the left most position of the ground tile given a y-Positions.
+    /// This point is extrapolated and is based entirely on the angle of the tile. Make sure you are actually colliding with this tile before using this method
+    /// </summary>
+    /// <param name="yPosition"></param>
+    /// <returns></returns>
+    public Vector2 GetLeftPosition(float yPosition)
     {
         switch (groundType)
         {
 
         }
         return Vector2.zero;
+    }
+
+    /// <summary>
+    /// Use this method to find a position between two points given an x position. It wil take the angle of the points and interpolate it from the v1 position
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    private Vector2 FindPointBetweenX(Vector2 v1, Vector2 v2, float x)
+    {
+        Vector2 point;
+        Vector2 dir = (v2 - v1).normalized;
+        point = v1 + dir * (x - v1.x);
+        return point;
+    }
+
+
+    private Vector2 FindPointBetweenY(Vector2 v1, Vector2 v2, float y)
+    {
+        Vector2 point;
+        Vector2 dir = (v2 - v1).normalized;
+        point = v1 + dir * (y - v1.y);
+        return point;
     }
     #endregion calculate position
 }
