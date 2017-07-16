@@ -5,6 +5,9 @@ using UnityEngine;
 /// <summary>
 /// This class is strictly for ground colliders. This will provide the proper height that the player should be at when they are touching the ground
 /// </summary>
+
+[RequireComponent(typeof(Collider2D))]
+
 public class GroundColliders : MonoBehaviour {
     #region enum values
     public enum GroundType
@@ -18,10 +21,17 @@ public class GroundColliders : MonoBehaviour {
 
     #region main variables
     public GroundType groundType;
+
+    private Collider2D mainCollider;
     #endregion main variables
 
 
     #region monobehaviour methods
+    private void Start()
+    {
+        mainCollider = GetComponent<Collider2D>();
+    }
+
     private void OnValidate()
     {
         Collider2D[] colliders = GetComponents<Collider2D>();
@@ -69,5 +79,44 @@ public class GroundColliders : MonoBehaviour {
         DestroyImmediate(obj);
     }
 
-    
+    #region calculate position
+    public Vector2 GetTopPosition(float x)
+    {
+        switch (groundType)
+        {
+            case GroundType.ANGLED_GROUND:
+                
+                return vec;
+                
+        }
+        return Vector2.zero;
+    }
+
+    public Vector2 GetBottomPosition(float x)
+    {
+        switch (groundType)
+        {
+            
+        }
+        return Vector2.zero;
+    }
+
+    public Vector2 GetRightPosition(float y)
+    {
+        switch(groundType)
+        {
+
+        }
+        return Vector2.zero;
+    }
+
+    public Vector2 GetLeftPosition(float y)
+    {
+        switch (groundType)
+        {
+
+        }
+        return Vector2.zero;
+    }
+    #endregion calculate position
 }
