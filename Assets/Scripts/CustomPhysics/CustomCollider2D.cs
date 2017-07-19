@@ -83,12 +83,12 @@ public class CustomCollider2D : MonoBehaviour {
                     Vector2 collisionPoint;
                     if (rigid.velocity.y <= 0)
                     {
-                        collisionPoint = groundCollider.GetTopPosition(transform.position.x);
+                        collisionPoint = groundCollider.getTopPosition(transform.position.x);
                         transform.position = collisionPoint;
                     }
                     else
                     {
-                        collisionPoint = groundCollider.GetBottomPosition(transform.position.x);
+                        collisionPoint = groundCollider.getBottomPosition(transform.position.x);
                     }
 
                     rigid.inAir = false;

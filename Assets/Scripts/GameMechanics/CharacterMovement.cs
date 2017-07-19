@@ -6,6 +6,9 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour {
 
     #region main variables
+    private const float MinimumInputThreshold = .15f;
+
+    [Header("Ground Movement")]
     [Tooltip("The max movement speed when the character is walking")]
     public float walkSpeed = 2.5f;
     [Tooltip("The max movement speed when the character is running")]
@@ -13,10 +16,17 @@ public class CharacterMovement : MonoBehaviour {
     [Tooltip("The acceleration of player movement while they are on the ground")]
     public float acceleration = 25f;
 
+    [Header("Air Movement")]
     [Tooltip("The maximum movement of the player while they are airborne")]
     public float airSpeed = 7.5f;
     [Tooltip("The acceleration of the player while they are in the air")]
     public float airAcceleration = 10f;
+
+    [Header("Orientation Variables")]
+    [Tooltip("If active the sprite will change direction based on the player's input")]
+    public bool flipSpriteActive = true;
+    [Tooltip("The current direction of the sprite. If you would like a sprite to begin in a certain direction, you can toggle this value in the editor")]
+    public bool isRight = true;
 
     private float hInput;
     private CustomPhysics2D rigid;
@@ -31,6 +41,10 @@ public class CharacterMovement : MonoBehaviour {
     private void Update()
     {
         hInput = PlayerController.Instance.getAxisRaw(PlayerController.MOVEMENT);
+
+        updateSpriteOrientation();
+        updateSpritesActualDirection();
+
         updateMovementSpeed();
     }
     #endregion monobehaviour methods
@@ -48,7 +62,7 @@ public class CharacterMovement : MonoBehaviour {
         {
             goalSpeed = Mathf.Sign(hInput) * runSpeed;
         }
-        else if (Mathf.Abs(hInput) > .15f)
+        else if (Mathf.Abs(hInput) > MinimumInputThreshold)
         {
             goalSpeed = Mathf.Sign(hInput) * walkSpeed;
         }
@@ -59,4 +73,27 @@ public class CharacterMovement : MonoBehaviour {
     {
 
     }
+
+    #region orientation methods
+    private void updateSpriteOrientation()
+    {
+        if (!flipSpriteActive) return;
+        if (Mathf.Abs(hInput) < MinimumInputThreshold) return;
+        this.isRight = Mathf.Sign(hInput) > 0;
+    }
+
+    private void updateSpritesActualDirection()
+    {
+        float direction = Mathf.Sign(transform.localScale.x);
+        if (this.isRight && direction < 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        if (!this.isRight && direction > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+    }
+
+    #endregion orientation methods
 }

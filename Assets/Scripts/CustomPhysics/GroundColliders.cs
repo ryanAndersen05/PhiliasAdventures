@@ -86,7 +86,7 @@ public class GroundColliders : MonoBehaviour {
     /// </summary>
     /// <param name="xPosition"></param>
     /// <returns></returns>
-    public Vector2 GetTopPosition(float xPosition)
+    public Vector2 getTopPosition(float xPosition)
     {
         switch (groundType)
         {
@@ -114,7 +114,7 @@ public class GroundColliders : MonoBehaviour {
     /// </summary>
     /// <param name="xPosition"></param>
     /// <returns></returns>
-    public Vector2 GetBottomPosition(float xPosition)
+    public Vector2 getBottomPosition(float xPosition)
     {
         
         switch (groundType)
@@ -139,7 +139,7 @@ public class GroundColliders : MonoBehaviour {
     /// </summary>
     /// <param name="yPosition"></param>
     /// <returns></returns>
-    public Vector2 GetRightPosition(float yPosition)
+    public Vector2 getRightPosition(float yPosition)
     {
         switch(groundType)
         {
@@ -154,7 +154,7 @@ public class GroundColliders : MonoBehaviour {
     /// </summary>
     /// <param name="yPosition"></param>
     /// <returns></returns>
-    public Vector2 GetLeftPosition(float yPosition)
+    public Vector2 getLeftPosition(float yPosition)
     {
         switch (groundType)
         {
