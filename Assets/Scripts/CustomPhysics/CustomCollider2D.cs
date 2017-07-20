@@ -84,7 +84,7 @@ public class CustomCollider2D : MonoBehaviour {
                     if (rigid.velocity.y <= 0)
                     {
                         collisionPoint = groundCollider.getTopPosition(transform.position.x);
-                        transform.position = collisionPoint;
+                        transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
                     }
                     else
                     {
@@ -127,7 +127,16 @@ public class CustomCollider2D : MonoBehaviour {
             hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Abs(xVel) * Time.deltaTime, LayerMask.GetMask(layerMask));
             if (hit)
             {
-
+                GroundColliders groundCollider = hit.collider.GetComponent<GroundColliders>();
+                if (groundCollider)
+                {
+                    Vector3 collisionPoint;
+                    if ((rigid.velocity.x) < 0)
+                    {
+                        //collisionPoint = groundCollider.getRightPosition(ray.origin.y);
+                        //transform.position = new Vector3
+                    }
+                }
             }
             if (DebugSettings.Instance.displayColliderRays)
             {

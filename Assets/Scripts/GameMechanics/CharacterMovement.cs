@@ -46,6 +46,7 @@ public class CharacterMovement : MonoBehaviour {
         updateSpritesActualDirection();
 
         updateMovementSpeed();
+        
     }
     #endregion monobehaviour methods
 
