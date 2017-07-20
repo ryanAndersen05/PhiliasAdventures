@@ -23,6 +23,8 @@ public class GroundColliders : MonoBehaviour {
     public GroundType groundType;
 
     private Collider2D mainCollider;
+    private Vector2 p1;
+    private Vector2 p2;
     #endregion main variables
 
 
@@ -95,7 +97,17 @@ public class GroundColliders : MonoBehaviour {
             case GroundType.ANGLED_GROUND:
                 EdgeCollider2D edgeCollider = (EdgeCollider2D)mainCollider;
                 //print("Point 1: " + edgeCollider.points[0] + " Point 2: " + edgeCollider.points[1]);
-                return FindPointBetweenX(edgeCollider.points[0], edgeCollider.points[1], xPosition);
+                //print(edgeCollider.bounds.max);
+                //print(edgeCollider.bounds.min);
+                Vector2 p1 = edgeCollider.bounds.min;
+                Vector2 p2 = edgeCollider.bounds.max;
+                if (p1.y > p2.y)
+                {
+                    float yTemp = p1.y;
+                    p1.y = p2.y;
+                    p2.y = yTemp;
+                }
+                return FindPointBetweenX(edgeCollider.bounds.min, edgeCollider.bounds.max, xPosition);
             case GroundType.WALL:
                 BoxCollider2D boxCollider = (BoxCollider2D)mainCollider;
                 Vector2 topLeft = new Vector2(boxCollider.bounds.min.x, boxCollider.bounds.max.y);
@@ -117,6 +129,7 @@ public class GroundColliders : MonoBehaviour {
     public Vector2 getBottomPosition(float xPosition)
     {
         
+
         switch (groundType)
         {
             case GroundType.FLAT_GROUND:

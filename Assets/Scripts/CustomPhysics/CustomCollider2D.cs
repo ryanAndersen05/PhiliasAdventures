@@ -130,12 +130,20 @@ public class CustomCollider2D : MonoBehaviour {
                 GroundColliders groundCollider = hit.collider.GetComponent<GroundColliders>();
                 if (groundCollider)
                 {
-                    Vector3 collisionPoint;
+                    Vector2 collisionPoint;
                     if ((rigid.velocity.x) < 0)
                     {
-                        //collisionPoint = groundCollider.getRightPosition(ray.origin.y);
-                        //transform.position = new Vector3
+                        collisionPoint = groundCollider.getRightPosition(ray.origin.y);
+                        collisionPoint = collisionPoint + new Vector2(transform.position.x - allCorners.bottomLeft.x, 0);
+                        transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
                     }
+                    else
+                    {
+                        collisionPoint = groundCollider.getLeftPosition(ray.origin.y);
+                        collisionPoint = collisionPoint + new Vector2(transform.position.x - allCorners.bottomRight.x, 0);
+                        transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
+                    }
+                    rigid.velocity.x = 0;//If we hit a wall, then more than likely we will be setting the velocity to 0
                 }
             }
             if (DebugSettings.Instance.displayColliderRays)
@@ -149,8 +157,8 @@ public class CustomCollider2D : MonoBehaviour {
     protected void updateCorners()
     {
         Corners newCorners = new Corners();
-        newCorners.bottomLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.min.y - .015f);
-        newCorners.bottomRight = new Vector2(physicsCollider.bounds.max.x, physicsCollider.bounds.min.y + .015f);
+        newCorners.bottomLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.min.y + .005f);
+        newCorners.bottomRight = new Vector2(physicsCollider.bounds.max.x, physicsCollider.bounds.min.y + .005f);
         newCorners.topLeft = new Vector2(physicsCollider.bounds.min.x, physicsCollider.bounds.max.y);
         newCorners.topRight = physicsCollider.bounds.max;
         allCorners = newCorners;
