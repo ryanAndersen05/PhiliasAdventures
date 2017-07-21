@@ -15,9 +15,11 @@ public class PlayerStats : MonoBehaviour {
     public float currentHealth { get; private set; }
     [HideInInspector]
     public CharacterMovement characterMovement;
+    public Animator anim { get; private set; }
 
     private void Start()
     {
         characterMovement = GetComponent<CharacterMovement>();
+        anim = GetComponent<Animator>();
     }
 }

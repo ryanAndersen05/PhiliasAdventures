@@ -30,12 +30,14 @@ public class CharacterMovement : MonoBehaviour {
 
     private float hInput;
     private CustomPhysics2D rigid;
+    private Animator anim;
     #endregion main variables
 
     #region monobehaviour methods
     private void Start()
     {
         rigid = GetComponent<CustomPhysics2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -58,6 +60,8 @@ public class CharacterMovement : MonoBehaviour {
 
     private void updateMovementSpeed()
     {
+        anim.SetFloat("Speed", Mathf.Abs(hInput));
+
         float goalSpeed = 0;
         if (Mathf.Abs(hInput) > .75f)
         {
