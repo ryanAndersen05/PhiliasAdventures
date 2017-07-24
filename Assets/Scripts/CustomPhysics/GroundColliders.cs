@@ -156,7 +156,16 @@ public class GroundColliders : MonoBehaviour {
     {
         switch(groundType)
         {
-
+            case GroundType.FLAT_GROUND:
+            case GroundType.ANGLED_GROUND:
+            case GroundType.ONE_WAY_PLATFORM:
+                EdgeCollider2D edgeCollider = (EdgeCollider2D)mainCollider;
+                return new Vector2(edgeCollider.bounds.max.x, yPosition);
+            case GroundType.WALL:
+                BoxCollider2D boxCollider = (BoxCollider2D)mainCollider;
+                Vector2 topRight = boxCollider.bounds.max;
+                Vector2 bottomRight = new Vector2(boxCollider.bounds.max.x, boxCollider.bounds.min.y);
+                return FindPointBetweenY(topRight, bottomRight, yPosition);
         }
         return Vector2.zero;
     }
@@ -171,7 +180,16 @@ public class GroundColliders : MonoBehaviour {
     {
         switch (groundType)
         {
-
+            case GroundType.FLAT_GROUND:
+            case GroundType.ANGLED_GROUND:
+            case GroundType.ONE_WAY_PLATFORM:
+                EdgeCollider2D edgeCollider = (EdgeCollider2D)mainCollider;
+                return new Vector2(edgeCollider.bounds.min.x, yPosition);
+            case GroundType.WALL:
+                BoxCollider2D boxCollider = (BoxCollider2D)mainCollider;
+                Vector2 topLeft = new Vector2(boxCollider.bounds.min.x, boxCollider.bounds.max.y);
+                Vector2 bottomLeft = boxCollider.bounds.min;
+                return FindPointBetweenY(topLeft, bottomLeft, yPosition);
         }
         return Vector2.zero;
     }

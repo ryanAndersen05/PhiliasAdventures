@@ -133,16 +133,16 @@ public class CustomCollider2D : MonoBehaviour {
                     Vector2 collisionPoint;
                     if ((rigid.velocity.x) < 0)
                     {
-                        collisionPoint = groundCollider.getRightPosition(ray.origin.y);
+                        collisionPoint = groundCollider.getRightPosition(transform.position.y);
                         collisionPoint = collisionPoint + new Vector2(transform.position.x - allCorners.bottomLeft.x, 0);
-                        transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
                     }
                     else
                     {
-                        collisionPoint = groundCollider.getLeftPosition(ray.origin.y);
-                        collisionPoint = collisionPoint + new Vector2(transform.position.x - allCorners.bottomRight.x, 0);
-                        transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
+                        collisionPoint = groundCollider.getLeftPosition(transform.position.y);
+                        collisionPoint = collisionPoint - new Vector2(transform.position.x - allCorners.bottomRight.x, 0);
                     }
+                    print(collisionPoint);
+                    transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
                     rigid.velocity.x = 0;//If we hit a wall, then more than likely we will be setting the velocity to 0
                 }
             }
