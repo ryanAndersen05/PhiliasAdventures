@@ -72,7 +72,7 @@ public class CustomCollider2D : MonoBehaviour {
             ray.origin = left + ((right - left) / (verticalRayTraceCount - 1)) * i;
             ray.direction = rigid.velocity.y <= 0 ? Vector2.down : Vector2.up;
             RaycastHit2D hit;
-            float distanctToCalculate = Mathf.Abs(rigid.velocity.y) * Time.deltaTime + (rigid.velocity.y == 0f ? Mathf.Abs(verticalOffset) * 2 + .01f : 0);
+            float distanctToCalculate = Mathf.Abs(rigid.velocity.y) * Time.deltaTime + (rigid.velocity.y == 0f ? Mathf.Abs(horizontalOffset) * 2 + .01f : 0);
             hit = Physics2D.Raycast(ray.origin, ray.direction, distanctToCalculate, LayerMask.GetMask(layerMask));
             if (hit)
             {
@@ -133,16 +133,20 @@ public class CustomCollider2D : MonoBehaviour {
                     Vector2 collisionPoint;
                     if ((rigid.velocity.x) < 0)
                     {
+                        //print("Left");
                         collisionPoint = groundCollider.getRightPosition(transform.position.y);
-                        collisionPoint = collisionPoint + new Vector2(transform.position.x - allCorners.bottomLeft.x, 0);
+                        collisionPoint = collisionPoint - new Vector2(Mathf.Abs(transform.position.x - allCorners.bottomLeft.x), 0);
                     }
                     else
                     {
+                        //print("Right");
                         collisionPoint = groundCollider.getLeftPosition(transform.position.y);
-                        collisionPoint = collisionPoint - new Vector2(transform.position.x - allCorners.bottomRight.x, 0);
+                        collisionPoint = collisionPoint + new Vector2(Mathf.Abs(transform.position.x - allCorners.bottomRight.x), 0);
                     }
-                    print(collisionPoint);
-                    transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
+                    //print(collisionPoint);
+
+                    //We are definitely coming back to this. This is too stupid to actually work consistently....
+                    //transform.position = new Vector3(collisionPoint.x, collisionPoint.y, transform.position.z);
                     rigid.velocity.x = 0;//If we hit a wall, then more than likely we will be setting the velocity to 0
                 }
             }
@@ -174,6 +178,11 @@ public class CustomCollider2D : MonoBehaviour {
         public Vector2 topRight;
         public Vector2 bottomLeft;
         public Vector2 bottomRight;
+
+        public override string ToString()
+        {
+            return "Top Left: " + topLeft + " Top Right: " + topRight + "Bottom Left: " + bottomLeft + "Bottom Right: " + bottomRight;
+        }
     }
     #endregion structs
 }

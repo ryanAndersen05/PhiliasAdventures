@@ -6,7 +6,7 @@ using UnityEngine;
 /// This class is strictly for ground colliders. This will provide the proper height that the player should be at when they are touching the ground
 /// </summary>
 
-[RequireComponent(typeof(Collider2D))]
+//[RequireComponent(typeof(Collider2D))]
 
 public class GroundColliders : MonoBehaviour {
     #region enum values
