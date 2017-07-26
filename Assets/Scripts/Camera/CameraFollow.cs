@@ -27,7 +27,8 @@ public class CameraFollow : MonoBehaviour {
 
     private void LateUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, targetTransform.position + new Vector3(cameraOffset.x, cameraOffset.y, transform.position.z), ref currentCameraVelocity, timeToReachTarget);
+        //transform.position = Vector3.SmoothDamp(transform.position, targetTransform.position + new Vector3(cameraOffset.x, cameraOffset.y, transform.position.z), ref currentCameraVelocity, timeToReachTarget);
+        transform.position = new Vector3(targetTransform.position.x + cameraOffset.x, targetTransform.position.y + cameraOffset.y, transform.position.z);
     }
     #endregion monobehaviour methods
 }
