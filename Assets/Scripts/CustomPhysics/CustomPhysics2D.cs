@@ -26,15 +26,23 @@ public class CustomPhysics2D : MonoBehaviour {
     public bool inAir;
     #endregion main variables
 
+    private Animator anim;
+
     #region monobehaviour methods
     private void Start()
     {
         gravityDirection = gravityDirection.normalized;
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         updateVelocityGravity();
+        if (anim)
+        {
+            anim.SetBool("InAir", inAir);
+            anim.SetFloat("VerticalSpeed", velocity.y);
+        }
     }
 
     /// <summary>
