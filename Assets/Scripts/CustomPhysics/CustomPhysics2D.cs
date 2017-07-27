@@ -10,8 +10,13 @@ public class CustomPhysics2D : MonoBehaviour {
     #region main variables
     public const float GRAVITY = 9.8f;
     
+    [HideInInspector]
     [Tooltip("The scale of the gravity force that will be applied to the character")]
-    public float gravityScale = 1.0f;
+    public float gravityScale = 1.0f;//This is calculated based on jump. No need to recalcuate
+
+    [Tooltip("Additional Multiplier that will be applied to the gravity")]
+    public float baseGravityScale = 1.0f;
+
     [Tooltip("A multipler that will be applied to the gravity when the character is falling")]
     public float fallingMultiplier = 1.4f;
 
@@ -37,7 +42,7 @@ public class CustomPhysics2D : MonoBehaviour {
 
     private void Update()
     {
-        updateVelocityGravity();
+        UpdateVelocityGravity();
         if (anim)
         {
             anim.SetBool("InAir", inAir);
@@ -50,17 +55,17 @@ public class CustomPhysics2D : MonoBehaviour {
     /// </summary>
     private void LateUpdate()
     {
-        updatePositionFromVelocity();
+        UpdatePositionFromVelocity();
     }
 
     private void OnValidate()
     {
-        setGravityDirection(gravityDirection);
+        SetGravityDirection(gravityDirection);
         if (terminalVelocity < 0) terminalVelocity = 0;
     }
     #endregion monobehaviour methods
 
-    private void updatePositionFromVelocity()
+    private void UpdatePositionFromVelocity()
     {
         //print(velocity);
         Vector2 originalPosition = new Vector2(transform.position.x, transform.position.y);
@@ -68,7 +73,7 @@ public class CustomPhysics2D : MonoBehaviour {
         transform.position = new Vector3(originalPosition.x, originalPosition.y, transform.position.z);
     }
 
-    public void setGravityDirection(Vector2 direction)
+    public void SetGravityDirection(Vector2 direction)
     {
         this.gravityDirection = direction.normalized;
     }
@@ -76,12 +81,12 @@ public class CustomPhysics2D : MonoBehaviour {
     /// <summary>
     /// Updates the velocity based on the direction of the gravityDirection.
     /// </summary>
-    private void updateVelocityGravity()
+    private void UpdateVelocityGravity()
     {
         if (!inAir) return;
         Vector2 compareVec = gravityDirection * terminalVelocity;
         float scale = Mathf.Sign(compareVec.x);
-        float actualGrav = gravityScale * (velocity.y < 0 ? fallingMultiplier : 1);
+        float actualGrav = baseGravityScale * gravityScale * (velocity.y < 0 ? fallingMultiplier : 1);
 
         if (scale * compareVec.x > scale * velocity.x)
         {

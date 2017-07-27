@@ -10,7 +10,11 @@ public class Jump : MonoBehaviour {
     public float jumpHeight;
     [Tooltip("The desired time before the player reaches that height")]
     public float timeToHeight;
-    
+    [Tooltip("The Gravity multiplier that will be added to physics when the player is not currently holding the jump button")]
+    public float gravityMultiplierFastFall = 1.3f;
+    [Tooltip("There may be certain situations where we don't want to apply a gravity scale. In these situations set this check false")]
+    public bool useGravityScale = true;
+
     private bool usedDoubleJump;
     private CustomPhysics2D rigid;
     public float jumpVelocity { get; private set; }
@@ -38,7 +42,16 @@ public class Jump : MonoBehaviour {
                 jump();
             }
         }
-        
+
+        if (CheckApplyGravityScale())
+        {
+            rigid.baseGravityScale = this.gravityMultiplierFastFall;
+        } 
+        else
+        {
+            rigid.baseGravityScale = 1;
+        }
+
     }
 
     private void OnValidate()
@@ -55,5 +68,13 @@ public class Jump : MonoBehaviour {
     public void jump()
     {
         rigid.velocity.y = jumpVelocity;
+    }
+
+    private bool CheckApplyGravityScale()
+    {
+        if (rigid.velocity.y <= 0) return false;
+        if (!useGravityScale) return false;
+        if (Input.GetButton("Jump")) return false;
+        return true;
     }
 }

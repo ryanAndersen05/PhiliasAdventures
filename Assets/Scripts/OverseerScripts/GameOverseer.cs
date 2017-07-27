@@ -6,6 +6,10 @@ using UnityEngine;
 /// This class is used to hold the general information that is present in the current game
 /// </summary>
 public class GameOverseer : MonoBehaviour {
+    #region enums
+    public enum GameState { PAUSED, PLAYING }
+    #endregion enums
+
     #region static variables
     private static GameOverseer instance;
 
@@ -25,6 +29,8 @@ public class GameOverseer : MonoBehaviour {
     #region main variable
     private PlayerStats playerStats;
 
+    public GameState currentGameState;
+
 
     #endregion main variables
 
@@ -37,6 +43,7 @@ public class GameOverseer : MonoBehaviour {
     private void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
+        currentGameState = GameState.PLAYING;
     }
 
 
