@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
+        if (GameOverseer.Instance.currentGameState == GameOverseer.GameState.PAUSED) return;//We do not want to update in-game inputs if the game is paused
         updateAllInputs();
     }
     #endregion monobehaviour methods
